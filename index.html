@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0" />
+		<link
+			href="./output.css"
+			rel="stylesheet" />
+	</head>
+	<body class="dark:bg-gray-900 text-neutral-200">
+		<div
+			class="flex flex-col h-screen p-10 pb-20 gap-10 mx-auto max-w-[640px]">
+			<header>
+				<h1 class="text-5xl text-center font-bold">Quiz</h1>
+			</header>
+
+			<div class="h-8 overflow-hidden rounded-full bg-gray-700">
+				<div
+					id="timer"
+					class="h-8 bg-blue-200"
+					style="
+						width: 100%;
+						transition: width 200ms ease-in-out;
+					"></div>
+			</div>
+			<div class="flex justify-between translate-y-7 px-2 text-xl">
+				<span
+					>Question
+
+					<span id="quizNo">1</span>
+				</span>
+				<span>
+					<span
+						id="success"
+						class="text-green-400"
+						>0</span
+					>
+					/
+					<span
+						id="fail"
+						class="text-red-400"
+						>0</span
+					>
+				</span>
+			</div>
+			<div
+				id="quiz-section"
+				class="flex-grow bg-blue-800 rounded-xl">
+				<img
+					src="https://i.pravatar.cc/160"
+					class="size-40 rounded-full p-1 bg-blue-800 mx-auto -mt-20" />
+				<div
+					id="quiz"
+					class="m-8 mt-2"></div>
+			</div>
+		</div>
+
+		<script
+			type="module"
+			src="./index.js"></script>
+	</body>
+</html>
