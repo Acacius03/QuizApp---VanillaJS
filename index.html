@@ -2,63 +2,55 @@
 <html>
 	<head>
 		<meta charset="UTF-8" />
-		<meta
-			name="viewport"
-			content="width=device-width, initial-scale=1.0" />
-		<link
-			href="./index.css"
-			rel="stylesheet" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link href="./index.css" rel="stylesheet" />
 	</head>
 	<body class="dark:bg-gray-900 text-neutral-200">
-		<div
-			class="flex flex-col h-screen p-10 pb-20 gap-10 mx-auto max-w-[640px]">
-			<header>
-				<h1 class="text-5xl text-center font-bold">Quiz</h1>
+		<aside></aside>
+		<main class="h-screen flex flex-col mx-auto max-w-[640px]">
+			<header class="py-5 max-h-[100px]">
+				<h1 class="text-6xl text-center font-bold text-purple-800">
+					QuizLit<span class="text-yellow-500">XD</span>
+				</h1>
 			</header>
 
-			<div class="h-8 overflow-hidden rounded-full bg-gray-700">
-				<div
-					id="timer"
-					class="h-8 bg-blue-200"
-					style="
-						width: 100%;
-						transition: width 200ms ease-in-out;
-					"></div>
-			</div>
-			<div class="flex justify-between translate-y-7 px-2 text-xl">
-				<span
-					>Question
+			<section class="flex flex-col flex-grow p-10">
+				<div class="h-8 my-4 rounded-full bg-gray-700 overflow-hidden">
+					<div
+						id="timer"
+						class="h-8 rounded-full bg-blue-200"
+						style="
+							width: 100%;
+							transition: width 200ms linear;
+						"></div>
+				</div>
 
-					<span id="quizNo">1</span>
-				</span>
-				<span>
-					<span
-						id="success"
-						class="text-green-400"
-						>0</span
-					>
-					/
-					<span
-						id="fail"
-						class="text-red-400"
-						>0</span
-					>
-				</span>
-			</div>
-			<div
-				id="quiz-section"
-				class="flex-grow bg-blue-800 rounded-xl">
-				<img
-					src="https://i.pravatar.cc/160"
-					class="size-40 rounded-full p-1 bg-blue-800 mx-auto -mt-20" />
-				<div
-					id="quiz"
-					class="m-8 mt-2"></div>
-			</div>
-		</div>
+				<div class="flex justify-between p-2 text-xl">
+					<span>
+						Question
+						<span id="quizNo">1</span>
+					</span>
+					<span>
+						<span id="success" class="text-green-400"> 0 </span>
+						/
+						<span id="fail" class="text-red-400"> 0 </span>
+					</span>
+				</div>
 
-		<script
-			type="module"
-			src="./index.js"></script>
+				<div class="p-8 flex-grow bg-blue-800 rounded-xl" id="quiz">
+					<h2
+						id="quiz-question"
+						class="text-3xl font-bold text-center"></h2>
+					<ul id="quiz-options" class="space-y-3 p-2 mt-4">
+						<li
+							class="bg-blue-950 text-neutral-300 text-3xl rounded-lg overflow-hidden"></li>
+					</ul>
+				</div>
+			</section>
+
+			<footer class="h-24 self-stretch"></footer>
+		</main>
+
+		<script type="module" src="./index.js"></script>
 	</body>
 </html>
