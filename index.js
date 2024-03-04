@@ -1,12 +1,41 @@
+const apiUrl = 'https://opentdb.com/api.php?amount=30';
+
+const categories = [
+	{ text: 'Any', urlParam: '' },
+	{ text: 'Video Games', urlParam: '&category=15' },
+	{ text: 'Computers', urlParam: '&category=18' },
+	{ text: 'Cars', urlParam: '&category=28' },
+	{ text: 'Comics', urlParam: '&category=29' },
+	{ text: 'Gadgets', urlParam: '&category=30' },
+	{ text: 'Anime & Manga', urlParam: '&category=31' },
+];
+
+const difficulty = [
+	{ text: 'Any', urlParam: '' },
+	{ text: 'Easy', urlParam: '&difficulty=easy' },
+	{ text: 'Medium', urlParam: '&difficulty=medium' },
+	{ text: 'Hard', urlParam: '&difficulty=hard' },
+];
+
+const type = [
+	{ text: 'any', urlParam: '' },
+	{ text: 'Multiple Choice', urlParam: '&type=multple' },
+	{ text: 'True or False', urlParam: '&type=boolean' },
+];
 // Elements
 const timerElement = document.getElementById('timer');
-// const QuizNoElement;
 const successScoreElement = document.getElementById('success');
 const failScoreElement = document.getElementById('fail');
+const quizQuestionElement = document.getElementById('quiz-question');
+const quizOptionsElement = document.getElementById('quiz-options');
+const QuizNumberElement = document.getElementById('quiz-number');
 // Variables
 let currentQuiz = null;
 let options = null;
 let quizzes = [];
+let quizCategory = 0;
+let quizDifficulty = 0;
+let quizType = 0;
 let success = 0;
 let fail = 0;
 let quizNo = 0;
@@ -95,7 +124,9 @@ const showCorrectAnswer = async (e = null) => {
 
 const getQuizzes = async () => {
 	try {
-		const response = await fetch('https://opentdb.com/api.php?amount=30');
+		const response = await fetch(
+			`https://opentdb.com/api.php?amount=30${categories[quizCategory]}${difficulty[quizDifficulty]}${type[quizType]}`
+		);
 		const json = await response.json();
 		const newQuizzes = json.results;
 		quizzes = quizzes.concat(newQuizzes);
@@ -105,15 +136,15 @@ const getQuizzes = async () => {
 };
 
 const showQuiz = () => {
-	document.getElementById('quiz-question').innerHTML = '';
-	document.getElementById('quiz-options').innerHTML = loading;
 	quizNo += 1;
-	document.getElementById('quizNo').innerText = quizNo;
+	quizQuestionElement.innerHTML = '';
+	quizOptionsElement.innerHTML = loading;
+	QuizNumberElement.innerText = quizNo;
 	currentQuiz = quizzes[0];
 	if (!currentQuiz) return;
-	document.getElementById('quiz-question').innerHTML = currentQuiz.question;
+	quizQuestionElement.innerHTML = currentQuiz.question;
 	setTimeout(() => {
-		document.getElementById('quiz-options').innerHTML = `
+		quizOptionsElement.innerHTML = `
         ${shuffleArray([
 			currentQuiz.correct_answer,
 			...currentQuiz.incorrect_answers,
@@ -136,11 +167,13 @@ const showQuiz = () => {
 
 // Fetch Initial Data before loading the quiz
 (function () {
-	document.getElementById('quiz-options').innerHTML = `
+	quizOptionsElement.innerHTML = `
 	${loading}
 	<h2 class="text-center">Fetching Quizzes...</h2>
 	`;
-	fetch('https://opentdb.com/api.php?amount=20')
+	fetch(
+		`https://opentdb.com/api.php?amount=30${categories[quizCategory]}${difficulty[quizDifficulty]}${type[quizType]}`
+	)
 		.then(res => res.ok && res.json())
 		.then(json => {
 			quizzes = json.results;

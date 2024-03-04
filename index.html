@@ -7,14 +7,21 @@
 	</head>
 	<body class="dark:bg-gray-900 text-neutral-200">
 		<aside></aside>
-		<main class="h-screen flex flex-col mx-auto max-w-[640px]">
-			<header class="py-5 max-h-[100px]">
+
+		<main
+			class="relative h-screen flex flex-col mx-auto max-w-[640px] overflow-hidden">
+			<img
+				src="./confetti.png"
+				class="rotate-180 absolute -z-[1] scale-150 h-96 left-0 bottom-0 w-full"
+				alt="" />
+			<header class="py-10">
 				<h1 class="text-6xl text-center font-bold text-purple-800">
-					QuizLit<span class="text-yellow-500">XD</span>
+					QuizLit
+					<span class="text-yellow-500">XD</span>
 				</h1>
 			</header>
 
-			<section class="flex flex-col flex-grow p-10">
+			<section class="flex flex-col flex-grow px-10">
 				<div class="h-8 my-4 rounded-full bg-gray-700 overflow-hidden">
 					<div
 						id="timer"
@@ -28,7 +35,7 @@
 				<div class="flex justify-between p-2 text-xl">
 					<span>
 						Question
-						<span id="quizNo">1</span>
+						<span id="quiz-number">1</span>
 					</span>
 					<span>
 						<span id="success" class="text-green-400"> 0 </span>
@@ -47,8 +54,7 @@
 					</ul>
 				</div>
 			</section>
-
-			<footer class="h-24 self-stretch"></footer>
+			<footer class="h-32"></footer>
 		</main>
 
 		<script type="module" src="./index.js"></script>

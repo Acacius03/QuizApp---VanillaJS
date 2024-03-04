@@ -544,6 +544,26 @@ video {
   --tw-backdrop-sepia:  ;
 }
 
+.absolute {
+  position: absolute;
+}
+
+.relative {
+  position: relative;
+}
+
+.bottom-0 {
+  bottom: 0px;
+}
+
+.left-0 {
+  left: 0px;
+}
+
+.-z-\[1\] {
+  z-index: -1;
+}
+
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
@@ -571,12 +591,16 @@ video {
   height: 8rem;
 }
 
-.h-24 {
-  height: 6rem;
+.h-32 {
+  height: 8rem;
 }
 
 .h-8 {
   height: 2rem;
+}
+
+.h-96 {
+  height: 24rem;
 }
 
 .h-full {
@@ -585,10 +609,6 @@ video {
 
 .h-screen {
   height: 100vh;
-}
-
-.max-h-\[100px\] {
-  max-height: 100px;
 }
 
 .w-full {
@@ -606,6 +626,17 @@ video {
 
 .flex-grow {
   flex-grow: 1;
+}
+
+.rotate-180 {
+  --tw-rotate: 180deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.scale-150 {
+  --tw-scale-x: 1.5;
+  --tw-scale-y: 1.5;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
 @keyframes spin {
@@ -634,10 +665,6 @@ video {
   --tw-space-y-reverse: 0;
   margin-top: calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(0.75rem * var(--tw-space-y-reverse));
-}
-
-.self-stretch {
-  align-self: stretch;
 }
 
 .overflow-hidden {
@@ -690,10 +717,6 @@ video {
   fill: #2563eb;
 }
 
-.p-10 {
-  padding: 2.5rem;
-}
-
 .p-2 {
   padding: 0.5rem;
 }
@@ -702,9 +725,14 @@ video {
   padding: 2rem;
 }
 
-.py-5 {
-  padding-top: 1.25rem;
-  padding-bottom: 1.25rem;
+.px-10 {
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+}
+
+.py-10 {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
 }
 
 .text-center {
@@ -728,10 +756,6 @@ video {
 
 .font-bold {
   font-weight: 700;
-}
-
-.font-semibold {
-  font-weight: 600;
 }
 
 .text-black {
@@ -759,11 +783,6 @@ video {
   color: rgb(212 212 212 / var(--tw-text-opacity));
 }
 
-.text-neutral-400 {
-  --tw-text-opacity: 1;
-  color: rgb(163 163 163 / var(--tw-text-opacity));
-}
-
 .text-purple-800 {
   --tw-text-opacity: 1;
   color: rgb(107 33 168 / var(--tw-text-opacity));
@@ -785,11 +804,6 @@ video {
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
-}
-
-.hover\:bg-blue-100:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(219 234 254 / var(--tw-bg-opacity));
 }
 
 .hover\:bg-indigo-950:hover {
