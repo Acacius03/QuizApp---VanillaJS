@@ -1,3 +1,4 @@
+// API
 const apiUrl = 'https://opentdb.com/api.php?amount=30';
 
 const categories = [
@@ -27,19 +28,18 @@ const categories = [
 	{ text: 'Anime & Manga', urlParam: '&category=31' },
 	{ text: 'Cartoons & Animations', urlParam: '&category=32' },
 ];
-
 const difficulty = [
 	{ text: 'Random', urlParam: '' },
 	{ text: 'Easy', urlParam: '&difficulty=easy' },
 	{ text: 'Medium', urlParam: '&difficulty=medium' },
 	{ text: 'Hard', urlParam: '&difficulty=hard' },
 ];
-
 const types = [
 	{ text: 'Random', urlParam: '' },
 	{ text: 'Multiple Choice', urlParam: '&type=multple' },
 	{ text: 'True or False', urlParam: '&type=boolean' },
 ];
+
 // Elements
 const timerElement = document.getElementById('timer');
 const successScoreElement = document.getElementById('success');
@@ -107,6 +107,7 @@ const startTimer = () => {
 	time = maxTime;
 	timerInterval = setInterval(timer, 100);
 };
+
 // Button Functions
 const setQuizDifficulty = diff => {
 	quizDifficulty = diff;
@@ -122,6 +123,7 @@ const changeQuiz = () => {
 	fail = 0;
 	quizNo = 0;
 	quizzes = [];
+
 	quizQuestionElement.innerHTML = '';
 
 	quizOptionsElement.innerHTML = `${loading} <h2 class="text-center">Fetching Quizzes...</h2>`;
@@ -135,6 +137,7 @@ const changeQuiz = () => {
 		showQuiz();
 	}, 5000);
 };
+
 // Main Functions
 const increaseSuccessScore = () => {
 	success += 1;
@@ -200,10 +203,9 @@ const showQuiz = () => {
 			...currentQuiz.incorrect_answers,
 		])
 			.map(
-				option => `
-                <li class="bg-blue-950 text-neutral-300 text-3xl rounded-lg overflow-hidden">
-                    <button class="options block w-full h-full p-2">${option}</button>
-                </li>`
+				option => ` <li class="bg-blue-950 text-neutral-300 text-3xl rounded-lg overflow-hidden">
+								<button class="options block w-full h-full p-2">${option}</button>
+							</li>`
 			)
 			.join('')}`;
 		options = document.querySelectorAll('.options');
@@ -215,6 +217,7 @@ const showQuiz = () => {
 	}, 300);
 };
 
+// Populate buttons for setting categories, difficulty and quiz type
 categories.forEach((category, id) => {
 	const button = document.createElement('button');
 	button.classList.add(
@@ -269,6 +272,7 @@ types.forEach((type, id) => {
 	button.innerText = type.text;
 	typeBtnsElement.appendChild(button);
 });
+
 sideNav.addEventListener('mouseleave', () => {
 	sideNav.classList.remove('show');
 });
