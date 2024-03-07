@@ -1,24 +1,42 @@
 const apiUrl = 'https://opentdb.com/api.php?amount=30';
 
 const categories = [
-	{ text: 'Any', urlParam: '' },
+	{ text: 'Random', urlParam: '' },
+	{ text: 'General Knowledge', urlParam: '&category=9' },
+	{ text: 'Books', urlParam: '&category=10' },
+	{ text: 'Films', urlParam: '&category=11' },
+	{ text: 'Music', urlParam: '&category=12' },
+	{ text: 'Musicals & Theatre', urlParam: '&category=13' },
+	{ text: 'Television', urlParam: '&category=14' },
 	{ text: 'Video Games', urlParam: '&category=15' },
+	{ text: 'Board Games', urlParam: '&category=16' },
+	{ text: 'Science & Nature', urlParam: '&category=17' },
 	{ text: 'Computers', urlParam: '&category=18' },
+	{ text: 'Math', urlParam: '&category=19' },
+	{ text: 'Mythology', urlParam: '&category=20' },
+	{ text: 'Sports', urlParam: '&category=21' },
+	{ text: 'Geography', urlParam: '&category=22' },
+	{ text: 'History', urlParam: '&category=23' },
+	{ text: 'Politics', urlParam: '&category=24' },
+	{ text: 'Art', urlParam: '&category=25' },
+	{ text: 'Celebrities', urlParam: '&category=26' },
+	{ text: 'Animals', urlParam: '&category=27' },
 	{ text: 'Cars', urlParam: '&category=28' },
 	{ text: 'Comics', urlParam: '&category=29' },
 	{ text: 'Gadgets', urlParam: '&category=30' },
 	{ text: 'Anime & Manga', urlParam: '&category=31' },
+	{ text: 'Cartoons & Animations', urlParam: '&category=32' },
 ];
 
 const difficulty = [
-	{ text: 'Any', urlParam: '' },
+	{ text: 'Random', urlParam: '' },
 	{ text: 'Easy', urlParam: '&difficulty=easy' },
 	{ text: 'Medium', urlParam: '&difficulty=medium' },
 	{ text: 'Hard', urlParam: '&difficulty=hard' },
 ];
 
-const type = [
-	{ text: 'any', urlParam: '' },
+const types = [
+	{ text: 'Random', urlParam: '' },
 	{ text: 'Multiple Choice', urlParam: '&type=multple' },
 	{ text: 'True or False', urlParam: '&type=boolean' },
 ];
@@ -29,6 +47,11 @@ const failScoreElement = document.getElementById('fail');
 const quizQuestionElement = document.getElementById('quiz-question');
 const quizOptionsElement = document.getElementById('quiz-options');
 const QuizNumberElement = document.getElementById('quiz-number');
+const difficultyBtnsElement = document.getElementById('difficulty-btns');
+const categoryBtnsElement = document.getElementById('category-btns');
+const typeBtnsElement = document.getElementById('type-btns');
+const sideNav = document.getElementById('side-nav');
+
 // Variables
 let currentQuiz = null;
 let options = null;
@@ -84,8 +107,35 @@ const startTimer = () => {
 	time = maxTime;
 	timerInterval = setInterval(timer, 100);
 };
+// Button Functions
+const setQuizDifficulty = diff => {
+	quizDifficulty = diff;
+};
+const setQuizCategory = diff => {
+	quizCategory = diff;
+};
+const setQuizType = diff => {
+	quizType = diff;
+};
+const changeQuiz = () => {
+	success = 0;
+	fail = 0;
+	quizNo = 0;
+	quizzes = [];
+	quizQuestionElement.innerHTML = '';
 
-// Event Handlers
+	quizOptionsElement.innerHTML = `${loading} <h2 class="text-center">Fetching Quizzes...</h2>`;
+
+	successScoreElement.innerText = success;
+	failScoreElement.innerText = fail;
+
+	resetTimer();
+	setTimeout(async () => {
+		await getQuizzes();
+		showQuiz();
+	}, 5000);
+};
+// Main Functions
 const increaseSuccessScore = () => {
 	success += 1;
 	successScoreElement.innerText = success;
@@ -125,7 +175,7 @@ const showCorrectAnswer = async (e = null) => {
 const getQuizzes = async () => {
 	try {
 		const response = await fetch(
-			`https://opentdb.com/api.php?amount=30${categories[quizCategory]}${difficulty[quizDifficulty]}${type[quizType]}`
+			`https://opentdb.com/api.php?amount=30${categories[quizCategory].urlParam}${difficulty[quizDifficulty].urlParam}${types[quizType].urlParam}`
 		);
 		const json = await response.json();
 		const newQuizzes = json.results;
@@ -165,19 +215,70 @@ const showQuiz = () => {
 	}, 300);
 };
 
+categories.forEach((category, id) => {
+	const button = document.createElement('button');
+	button.classList.add(
+		'px-6',
+		'h-14',
+		'text-base',
+		'font-medium',
+		'text-white',
+		'outline-none',
+		'rounded-lg',
+		'bg-purple-700',
+		'text-center',
+		'hover:bg-blue-700'
+	);
+	button.addEventListener('click', () => setQuizCategory(id));
+	button.innerText = category.text;
+	categoryBtnsElement.appendChild(button);
+});
+difficulty.forEach((diff, id) => {
+	const button = document.createElement('button');
+	button.classList.add(
+		'px-6',
+		'h-14',
+		'text-base',
+		'font-medium',
+		'text-white',
+		'outline-none',
+		'rounded-lg',
+		'bg-purple-700',
+		'text-center',
+		'hover:bg-blue-700'
+	);
+	button.addEventListener('click', () => setQuizDifficulty(id));
+	button.innerText = diff.text;
+	difficultyBtnsElement.appendChild(button);
+});
+types.forEach((type, id) => {
+	const button = document.createElement('button');
+	button.classList.add(
+		'px-6',
+		'h-14',
+		'text-base',
+		'font-medium',
+		'text-white',
+		'outline-none',
+		'rounded-lg',
+		'bg-purple-700',
+		'text-center',
+		'hover:bg-blue-700'
+	);
+	button.addEventListener('click', () => setQuizType(id));
+	button.innerText = type.text;
+	typeBtnsElement.appendChild(button);
+});
+sideNav.addEventListener('mouseleave', () => {
+	sideNav.classList.remove('show');
+});
+
+document.getElementById('side-nav-toggle').addEventListener('click', () => {
+	sideNav.classList.add('show');
+});
+
 // Fetch Initial Data before loading the quiz
-(function () {
-	quizOptionsElement.innerHTML = `
-	${loading}
-	<h2 class="text-center">Fetching Quizzes...</h2>
-	`;
-	fetch(
-		`https://opentdb.com/api.php?amount=30${categories[quizCategory]}${difficulty[quizDifficulty]}${type[quizType]}`
-	)
-		.then(res => res.ok && res.json())
-		.then(json => {
-			quizzes = json.results;
-			showQuiz();
-		})
-		.catch(err => console.log(err));
+(async () => {
+	await getQuizzes();
+	showQuiz();
 })();

@@ -4,18 +4,67 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link href="./index.css" rel="stylesheet" />
+		<style>
+			#side-nav {
+				translate: -100% 0;
+			}
+			#side-nav.show {
+				translate: 0 0;
+			}
+			@media screen and (min-width: 1280px) {
+				#side-nav {
+					translate: 0 0;
+				}
+			}
+		</style>
 	</head>
-	<body class="dark:bg-gray-900 text-neutral-200">
-		<aside></aside>
-
+	<body class="bg-gray-900 flex text-neutral-200">
+		<aside
+			id="side-nav"
+			class="fixed bg-gray-900 left-0 top-0 h-screen w-full px-2 max-w-[520px] xl:static z-10 flex flex-col gap-1 duration-700">
+			<h3 class="text-4xl font-bold mb-2">Difficulty</h3>
+			<div
+				id="difficulty-btns"
+				class="grid grid-cols-3 gap-1 rounded-md p-1"></div>
+			<h3 class="text-4xl font-bold mb-2">Categories</h3>
+			<div id="category-btns" class="grid grid-cols-3 gap-1"></div>
+			<h3 class="text-4xl font-bold mb-2">Type</h3>
+			<div id="type-btns" class="grid grid-cols-3 gap-1"></div>
+			<button
+				class="inline-flex items-center justify-center bg-blue-700 hover:bg-blue-800 outline-none px-6 py-3.5 text-base font-medium text-white rounded-lg text-center"
+				onclick="changeQuiz()">
+				Apply Changes
+			</button>
+		</aside>
 		<main
-			class="relative h-screen flex flex-col mx-auto max-w-[640px] overflow-hidden">
+			class="flex-grow lg:flex-shrink-0 relative h-screen flex flex-col mx-auto max-w-[640px] overflow-hidden">
 			<img
 				src="./confetti.png"
 				class="rotate-180 absolute -z-[1] scale-150 h-96 left-0 bottom-0 w-full"
 				alt="" />
-			<header class="py-10">
-				<h1 class="text-6xl text-center font-bold text-purple-800">
+			<header class="py-10 pl-8 flex items-center">
+				<button
+					onclick="showNav()"
+					id="side-nav-toggle"
+					type="button"
+					class="inline-flex items-center ml-1 p-2 w-20 h-20 justify-center text-sm text-gray-500 rounded-lg xl:hidden outline-none dark:text-gray-400 hover:bg-gray-700">
+					<!-- <span class="sr-only">Open main menu</span> -->
+					<svg
+						class="w-10 h-10"
+						aria-hidden="true"
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 17 14">
+						<path
+							stroke="currentColor"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M1 1h15M1 7h15M1 13h15" />
+					</svg>
+				</button>
+				<h1
+					class="text-6xl text-center xl:mx-auto font-bold text-purple-800">
 					QuizLit
 					<span class="text-yellow-500">XD</span>
 				</h1>
@@ -56,7 +105,6 @@
 			</section>
 			<footer class="h-32"></footer>
 		</main>
-
-		<script type="module" src="./index.js"></script>
+		<script src="./index.js"></script>
 	</body>
 </html>
