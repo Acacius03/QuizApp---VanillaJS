@@ -1,6 +1,5 @@
 // API
 const apiUrl = 'https://opentdb.com/api.php?amount=30';
-
 const categories = [
 	{ text: 'Random', urlParam: '' },
 	{ text: 'General Knowledge', urlParam: '&category=9' },
@@ -24,7 +23,6 @@ const categories = [
 	{ text: 'Animals', urlParam: '&category=27' },
 	{ text: 'Cars', urlParam: '&category=28' },
 	{ text: 'Comics', urlParam: '&category=29' },
-	{ text: 'Gadgets', urlParam: '&category=30' },
 	{ text: 'Anime & Manga', urlParam: '&category=31' },
 	{ text: 'Cartoons & Animations', urlParam: '&category=32' },
 ];
@@ -39,7 +37,6 @@ const types = [
 	{ text: 'Multiple Choice', urlParam: '&type=multple' },
 	{ text: 'True or False', urlParam: '&type=boolean' },
 ];
-
 // Elements
 const timerElement = document.getElementById('timer');
 const successScoreElement = document.getElementById('success');
@@ -51,7 +48,6 @@ const difficultyBtnsElement = document.getElementById('difficulty-btns');
 const categoryBtnsElement = document.getElementById('category-btns');
 const typeBtnsElement = document.getElementById('type-btns');
 const sideNav = document.getElementById('side-nav');
-
 // Variables
 let currentQuiz = null;
 let options = null;
@@ -62,9 +58,8 @@ let quizType = 0;
 let success = 0;
 let fail = 0;
 let quizNo = 0;
-
 // Templates
-const loading = `
+let loading = `
 <div role="status" class="mx-auto w-max h-full flex items-center" >
     <svg aria-hidden="true" class="size-32 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
@@ -72,7 +67,6 @@ const loading = `
     </svg>
 </div>
 `;
-
 // Helper Functions
 function shuffleArray(array) {
 	for (let i = array.length - 1; i > 0; i--) {
@@ -81,42 +75,74 @@ function shuffleArray(array) {
 	}
 	return array;
 }
-
 // Timer
 let timerInterval;
 const maxTime = 15;
 let time = maxTime;
-
 const timer = () => {
 	if (time <= 0) {
 		fail += 1;
 		failScoreElement.innerText = fail;
 		showCorrectAnswer();
 	}
-	time -= 0.1;
+	let display =
+		Math.ceil(time) < 10 ? `0${Math.ceil(time)}` : Math.ceil(time);
+	document.getElementById('timer-time-seconds').innerText = display;
 	timerElement.style.width = `${(time / maxTime) * 100}%`;
+	time -= 0.1;
 };
-
 const resetTimer = () => {
 	clearInterval(timerInterval);
 	time = maxTime;
+	document.getElementById('timer-time-seconds').innerText = maxTime;
 	timerElement.style.width = `${(time / maxTime) * 100}%`;
 };
-
 const startTimer = () => {
 	time = maxTime;
 	timerInterval = setInterval(timer, 100);
 };
-
 // Button Functions
+const resetButtonBg = button => {
+	if (!button.classList.contains('bg-yellow-500')) {
+		button.classList.remove('bg-blue-800');
+		button.classList.add('bg-purple-700');
+		button.classList.add('hover:bg-blue-700');
+	}
+};
 const setQuizDifficulty = diff => {
 	quizDifficulty = diff;
+
+	difficulty.forEach(diff => resetButtonBg(diff.button));
+
+	difficulty[quizDifficulty].button.classList.remove('bg-purple-700');
+	difficulty[quizDifficulty].button.classList.add('bg-blue-700');
 };
 const setQuizCategory = diff => {
 	quizCategory = diff;
+
+	categories.forEach(category => resetButtonBg(category.button));
+
+	categories[quizCategory].button.classList.remove('bg-purple-700');
+	categories[quizCategory].button.classList.add('bg-blue-700');
 };
 const setQuizType = diff => {
 	quizType = diff;
+
+	types.forEach(type => resetButtonBg(type.button));
+
+	types[quizType].button.classList.remove('bg-purple-700');
+	types[quizType].button.classList.add('bg-blue-700');
+};
+const changeActiveButton = (button, condition) => {
+	if (condition) {
+		button.classList.add('bg-yellow-500');
+		button.classList.remove('bg-purple-700');
+		button.classList.remove('hover:bg-blue-700');
+	} else {
+		button.classList.remove('bg-yellow-500');
+		button.classList.add('bg-purple-700');
+		button.classList.add('hover:bg-blue-700');
+	}
 };
 const changeQuiz = () => {
 	success = 0;
@@ -124,6 +150,18 @@ const changeQuiz = () => {
 	quizNo = 0;
 	quizzes = [];
 
+	categories.forEach(category =>
+		changeActiveButton(
+			category.button,
+			category === categories[quizCategory]
+		)
+	);
+	difficulty.forEach(diff =>
+		changeActiveButton(diff.button, diff === difficulty[quizDifficulty])
+	);
+	types.forEach(type =>
+		changeActiveButton(type.button, type === types[quizType])
+	);
 	quizQuestionElement.innerHTML = '';
 
 	quizOptionsElement.innerHTML = `${loading} <h2 class="text-center">Fetching Quizzes...</h2>`;
@@ -137,18 +175,15 @@ const changeQuiz = () => {
 		showQuiz();
 	}, 5000);
 };
-
 // Main Functions
 const increaseSuccessScore = () => {
 	success += 1;
 	successScoreElement.innerText = success;
 };
-
 const increaseFailScore = () => {
 	fail += 1;
 	failScoreElement.innerText = fail;
 };
-
 const showCorrectAnswer = async (e = null) => {
 	resetTimer();
 
@@ -172,22 +207,16 @@ const showCorrectAnswer = async (e = null) => {
 
 	quizzes.shift();
 	if (quizzes.length < 3) await getQuizzes();
-	setTimeout(showQuiz, 500);
+	setTimeout(showQuiz, 1000);
 };
-
 const getQuizzes = async () => {
-	try {
-		const response = await fetch(
-			`https://opentdb.com/api.php?amount=30${categories[quizCategory].urlParam}${difficulty[quizDifficulty].urlParam}${types[quizType].urlParam}`
-		);
-		const json = await response.json();
-		const newQuizzes = json.results;
-		quizzes = quizzes.concat(newQuizzes);
-	} catch (error) {
-		console.log(error);
-	}
+	await fetch(
+		`https://opentdb.com/api.php?amount=30${categories[quizCategory].urlParam}${difficulty[quizDifficulty].urlParam}${types[quizType].urlParam}`
+	)
+		.then(res => res.ok && res.json())
+		.then(json => (quizzes = quizzes.concat(json.results)))
+		.catch(err => console.log(err));
 };
-
 const showQuiz = () => {
 	quizNo += 1;
 	quizQuestionElement.innerHTML = '';
@@ -216,7 +245,6 @@ const showQuiz = () => {
 		startTimer();
 	}, 300);
 };
-
 // Populate buttons for setting categories, difficulty and quiz type
 categories.forEach((category, id) => {
 	const button = document.createElement('button');
@@ -228,13 +256,12 @@ categories.forEach((category, id) => {
 		'text-white',
 		'outline-none',
 		'rounded-lg',
-		'bg-purple-700',
-		'text-center',
-		'hover:bg-blue-700'
+		'text-center'
 	);
 	button.addEventListener('click', () => setQuizCategory(id));
 	button.innerText = category.text;
 	categoryBtnsElement.appendChild(button);
+	category.button = button;
 });
 difficulty.forEach((diff, id) => {
 	const button = document.createElement('button');
@@ -246,13 +273,12 @@ difficulty.forEach((diff, id) => {
 		'text-white',
 		'outline-none',
 		'rounded-lg',
-		'bg-purple-700',
-		'text-center',
-		'hover:bg-blue-700'
+		'text-center'
 	);
 	button.addEventListener('click', () => setQuizDifficulty(id));
 	button.innerText = diff.text;
 	difficultyBtnsElement.appendChild(button);
+	diff.button = button;
 });
 types.forEach((type, id) => {
 	const button = document.createElement('button');
@@ -264,25 +290,31 @@ types.forEach((type, id) => {
 		'text-white',
 		'outline-none',
 		'rounded-lg',
-		'bg-purple-700',
-		'text-center',
-		'hover:bg-blue-700'
+		'text-center'
 	);
 	button.addEventListener('click', () => setQuizType(id));
 	button.innerText = type.text;
 	typeBtnsElement.appendChild(button);
+	type.button = button;
 });
-
 sideNav.addEventListener('mouseleave', () => {
 	sideNav.classList.remove('show');
 });
+document.onclick = e => {
+	let x = e.pageX;
+	let y = e.pageY;
 
+	let span = document.createElement('span');
+	span.classList.add('click-ripple-effect');
+	span.style.top = y + 'px';
+	span.style.left = x + 'px';
+	document.querySelector('body').appendChild(span);
+	setTimeout(() => span.remove(), 600);
+};
 document.getElementById('side-nav-toggle').addEventListener('click', () => {
 	sideNav.classList.add('show');
 });
-
 // Fetch Initial Data before loading the quiz
-(async () => {
-	await getQuizzes();
-	showQuiz();
+(() => {
+	changeQuiz();
 })();
