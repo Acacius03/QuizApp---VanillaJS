@@ -92,7 +92,6 @@ const timer = () => {
 	time -= 0.1;
 };
 const resetTimer = () => {
-	clearInterval(timerInterval);
 	time = maxTime;
 	document.getElementById('timer-time-seconds').innerText = maxTime;
 	timerElement.style.width = `${(time / maxTime) * 100}%`;
@@ -169,7 +168,7 @@ const changeQuiz = () => {
 	successScoreElement.innerText = success;
 	failScoreElement.innerText = fail;
 
-	resetTimer();
+	clearInterval(timerInterval);
 	setTimeout(async () => {
 		await getQuizzes();
 		showQuiz();
@@ -185,8 +184,6 @@ const increaseFailScore = () => {
 	failScoreElement.innerText = fail;
 };
 const showCorrectAnswer = async (e = null) => {
-	resetTimer();
-
 	const tempElement = document.createElement('div');
 	tempElement.innerHTML = currentQuiz.correct_answer;
 	const correct_answer = tempElement.textContent;
@@ -205,6 +202,7 @@ const showCorrectAnswer = async (e = null) => {
 		else increaseFailScore();
 	}
 
+	clearInterval(timerInterval);
 	quizzes.shift();
 	if (quizzes.length < 3) await getQuizzes();
 	setTimeout(showQuiz, 1000);
@@ -218,6 +216,7 @@ const getQuizzes = async () => {
 		.catch(err => console.log(err));
 };
 const showQuiz = () => {
+	resetTimer();
 	quizNo += 1;
 	quizQuestionElement.innerHTML = '';
 	quizOptionsElement.innerHTML = loading;
