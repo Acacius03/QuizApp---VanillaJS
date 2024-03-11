@@ -168,6 +168,7 @@ const changeQuiz = () => {
 	successScoreElement.innerText = success;
 	failScoreElement.innerText = fail;
 
+	closeSideNav();
 	clearInterval(timerInterval);
 	setTimeout(async () => {
 		await getQuizzes();
@@ -231,7 +232,7 @@ const showQuiz = () => {
 			...currentQuiz.incorrect_answers,
 		])
 			.map(
-				option => ` <li class="bg-blue-950 text-neutral-300 text-3xl rounded-lg overflow-hidden">
+				option => ` <li class="bg-blue-950 text-neutral-300 text-xl rounded-lg overflow-hidden">
 								<button class="options block w-full h-full p-2">${option}</button>
 							</li>`
 			)
@@ -244,13 +245,16 @@ const showQuiz = () => {
 		startTimer();
 	}, 300);
 };
+const closeSideNav = () => sideNav.classList.remove('show');
 // Populate buttons for setting categories, difficulty and quiz type
 categories.forEach((category, id) => {
 	const button = document.createElement('button');
 	button.classList.add(
 		'px-6',
-		'h-14',
-		'text-base',
+		'h-12',
+		'max-h-14',
+		'text-xs',
+		'sm:text-base',
 		'font-medium',
 		'text-white',
 		'outline-none',
@@ -266,8 +270,10 @@ difficulty.forEach((diff, id) => {
 	const button = document.createElement('button');
 	button.classList.add(
 		'px-6',
-		'h-14',
-		'text-base',
+		'h-12',
+		'max-h-14',
+		'text-xs',
+		'sm:text-base',
 		'font-medium',
 		'text-white',
 		'outline-none',
@@ -283,8 +289,10 @@ types.forEach((type, id) => {
 	const button = document.createElement('button');
 	button.classList.add(
 		'px-6',
-		'h-14',
-		'text-base',
+		'h-12',
+		'max-h-14',
+		'text-xs',
+		'sm:text-base',
 		'font-medium',
 		'text-white',
 		'outline-none',
@@ -296,9 +304,7 @@ types.forEach((type, id) => {
 	typeBtnsElement.appendChild(button);
 	type.button = button;
 });
-sideNav.addEventListener('mouseleave', () => {
-	sideNav.classList.remove('show');
-});
+sideNav.addEventListener('mouseleave', closeSideNav);
 document.onclick = e => {
 	let x = e.pageX;
 	let y = e.pageY;
@@ -313,6 +319,7 @@ document.onclick = e => {
 document.getElementById('side-nav-toggle').addEventListener('click', () => {
 	sideNav.classList.add('show');
 });
+
 // Fetch Initial Data before loading the quiz
 (() => {
 	changeQuiz();
