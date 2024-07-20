@@ -85,8 +85,7 @@ const timer = () => {
 		failScoreElement.innerText = fail;
 		showCorrectAnswer();
 	}
-	let display =
-		Math.ceil(time) < 10 ? `0${Math.ceil(time)}` : Math.ceil(time);
+	let display = Math.ceil(time) < 10 ? `0${Math.ceil(time)}` : Math.ceil(time);
 	document.getElementById('timer-time-seconds').innerText = display;
 	timerElement.style.width = `${(time / maxTime) * 100}%`;
 	time -= 0.1;
@@ -101,46 +100,41 @@ const startTimer = () => {
 	timerInterval = setInterval(timer, 100);
 };
 // Button Functions
-const resetButtonBg = button => {
-	if (!button.classList.contains('bg-yellow-500')) {
-		button.classList.remove('bg-blue-800');
+const resetButtonBg = (button) => {
+	if (!button.classList.contains('active')) {
+		button.classList.remove('selected');
 		button.classList.add('bg-purple-700');
-		button.classList.add('hover:bg-blue-700');
 	}
 };
-const setQuizDifficulty = diff => {
+const setQuizDifficulty = (diff) => {
 	quizDifficulty = diff;
 
-	difficulty.forEach(diff => resetButtonBg(diff.button));
+	difficulty.forEach((diff) => resetButtonBg(diff.button));
 
-	difficulty[quizDifficulty].button.classList.remove('bg-purple-700');
-	difficulty[quizDifficulty].button.classList.add('bg-blue-700');
+	if (difficulty[quizDifficulty].button.classList.contains('active')) return;
+	difficulty[quizDifficulty].button.classList.add('selected');
 };
-const setQuizCategory = diff => {
+const setQuizCategory = (diff) => {
 	quizCategory = diff;
 
-	categories.forEach(category => resetButtonBg(category.button));
+	categories.forEach((category) => resetButtonBg(category.button));
 
-	categories[quizCategory].button.classList.remove('bg-purple-700');
-	categories[quizCategory].button.classList.add('bg-blue-700');
+	if (difficulty[quizDifficulty].button.classList.contains('active')) return;
+	categories[quizCategory].button.classList.add('selected');
 };
-const setQuizType = diff => {
+const setQuizType = (diff) => {
 	quizType = diff;
 
-	types.forEach(type => resetButtonBg(type.button));
+	types.forEach((type) => resetButtonBg(type.button));
 
-	types[quizType].button.classList.remove('bg-purple-700');
-	types[quizType].button.classList.add('bg-blue-700');
+	if (difficulty[quizDifficulty].button.classList.contains('active')) return;
+	types[quizType].button.classList.add('selected');
 };
 const changeActiveButton = (button, condition) => {
 	if (condition) {
-		button.classList.add('bg-yellow-500');
-		button.classList.remove('bg-purple-700');
-		button.classList.remove('hover:bg-blue-700');
+		button.classList.add('active');
 	} else {
-		button.classList.remove('bg-yellow-500');
-		button.classList.add('bg-purple-700');
-		button.classList.add('hover:bg-blue-700');
+		button.classList.remove('active');
 	}
 };
 const changeQuiz = () => {
@@ -149,16 +143,13 @@ const changeQuiz = () => {
 	quizNo = 0;
 	quizzes = [];
 
-	categories.forEach(category =>
-		changeActiveButton(
-			category.button,
-			category === categories[quizCategory]
-		)
+	categories.forEach((category) =>
+		changeActiveButton(category.button, category === categories[quizCategory])
 	);
-	difficulty.forEach(diff =>
+	difficulty.forEach((diff) =>
 		changeActiveButton(diff.button, diff === difficulty[quizDifficulty])
 	);
-	types.forEach(type =>
+	types.forEach((type) =>
 		changeActiveButton(type.button, type === types[quizType])
 	);
 	quizQuestionElement.innerHTML = '';
@@ -189,7 +180,7 @@ const showCorrectAnswer = async (e = null) => {
 	tempElement.innerHTML = currentQuiz.correct_answer;
 	const correct_answer = tempElement.textContent;
 
-	options.forEach(option => {
+	options.forEach((option) => {
 		option.classList.remove('hover:bg-indigo-950');
 		option.removeEventListener('click', showCorrectAnswer);
 		option.classList.add('text-black');
@@ -212,9 +203,9 @@ const getQuizzes = async () => {
 	await fetch(
 		`https://opentdb.com/api.php?amount=30${categories[quizCategory].urlParam}${difficulty[quizDifficulty].urlParam}${types[quizType].urlParam}`
 	)
-		.then(res => res.ok && res.json())
-		.then(json => (quizzes = quizzes.concat(json.results)))
-		.catch(err => console.log(err));
+		.then((res) => res.ok && res.json())
+		.then((json) => (quizzes = quizzes.concat(json.results)))
+		.catch((err) => console.log(err));
 };
 const showQuiz = () => {
 	resetTimer();
@@ -228,17 +219,19 @@ const showQuiz = () => {
 	setTimeout(() => {
 		quizOptionsElement.innerHTML = `
         ${shuffleArray([
-			currentQuiz.correct_answer,
-			...currentQuiz.incorrect_answers,
-		])
-			.map(
-				option => ` <li class="bg-blue-950 text-neutral-300 text-xl rounded-lg overflow-hidden">
+					currentQuiz.correct_answer,
+					...currentQuiz.incorrect_answers,
+				])
+					.map(
+						(
+							option
+						) => ` <li class="bg-blue-950 text-neutral-300 text-xl rounded-lg overflow-hidden">
 								<button class="options block w-full h-full p-2">${option}</button>
 							</li>`
-			)
-			.join('')}`;
+					)
+					.join('')}`;
 		options = document.querySelectorAll('.options');
-		options.forEach(option => {
+		options.forEach((option) => {
 			option.classList.add('hover:bg-indigo-950');
 			option.addEventListener('click', showCorrectAnswer);
 		});
@@ -249,18 +242,6 @@ const closeSideNav = () => sideNav.classList.remove('show');
 // Populate buttons for setting categories, difficulty and quiz type
 categories.forEach((category, id) => {
 	const button = document.createElement('button');
-	button.classList.add(
-		'px-6',
-		'h-12',
-		'max-h-14',
-		'text-xs',
-		'sm:text-base',
-		'font-medium',
-		'text-white',
-		'outline-none',
-		'rounded-lg',
-		'text-center'
-	);
 	button.addEventListener('click', () => setQuizCategory(id));
 	button.innerText = category.text;
 	categoryBtnsElement.appendChild(button);
@@ -268,18 +249,6 @@ categories.forEach((category, id) => {
 });
 difficulty.forEach((diff, id) => {
 	const button = document.createElement('button');
-	button.classList.add(
-		'px-6',
-		'h-12',
-		'max-h-14',
-		'text-xs',
-		'sm:text-base',
-		'font-medium',
-		'text-white',
-		'outline-none',
-		'rounded-lg',
-		'text-center'
-	);
 	button.addEventListener('click', () => setQuizDifficulty(id));
 	button.innerText = diff.text;
 	difficultyBtnsElement.appendChild(button);
@@ -287,25 +256,13 @@ difficulty.forEach((diff, id) => {
 });
 types.forEach((type, id) => {
 	const button = document.createElement('button');
-	button.classList.add(
-		'px-6',
-		'h-12',
-		'max-h-14',
-		'text-xs',
-		'sm:text-base',
-		'font-medium',
-		'text-white',
-		'outline-none',
-		'rounded-lg',
-		'text-center'
-	);
 	button.addEventListener('click', () => setQuizType(id));
 	button.innerText = type.text;
 	typeBtnsElement.appendChild(button);
 	type.button = button;
 });
 sideNav.addEventListener('mouseleave', closeSideNav);
-document.onclick = e => {
+document.onclick = (e) => {
 	let x = e.pageX;
 	let y = e.pageY;
 
@@ -321,6 +278,4 @@ document.getElementById('side-nav-toggle').addEventListener('click', () => {
 });
 
 // Fetch Initial Data before loading the quiz
-(() => {
-	changeQuiz();
-})();
+changeQuiz();

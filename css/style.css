@@ -1,0 +1,237 @@
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+body {
+	height: 100dvh;
+	background-color: #111827;
+	color: #e5e5e5;
+	display: flex;
+	justify-content: center;
+}
+button {
+	outline: none;
+}
+#side-nav {
+	translate: -100% 0;
+	z-index: 1000;
+	position: fixed;
+	background-color: #111827;
+	inset: 0;
+	max-width: 520px;
+	padding: 20px;
+	transition: translate 700ms;
+}
+#side-nav.show {
+	translate: 0 0;
+}
+#side-nav-close-btn {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	border: 1px solid white;
+	padding-block: 14px;
+	font-weight: bold;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: absolute;
+	top: 20px;
+	right: 20px;
+}
+#side-nav-close-btn:hover {
+	background-color: #1e40af;
+}
+#side-nav > * {
+	margin-bottom: 16px;
+}
+#side-nav > h3 {
+	font-weight: bold;
+	font-size: 2.25rem;
+	line-height: 2.5rem;
+}
+#side-nav > div {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 4px;
+}
+#side-nav > div > button {
+	height: 48px;
+	max-height: 56px;
+	font-weight: 600;
+	border-radius: 8px;
+	font-size: 0.75rem;
+	line-height: 1rem;
+	background-color: #7e22ce;
+}
+#side-nav > div > button.active,
+#side-nav > div > button.active:hover {
+	background-color: #eab308;
+}
+#side-nav > div > button:hover,
+#side-nav > div > button.selected {
+	background-color: #1e40af;
+}
+#apply-changes-btn {
+	font-weight: bold;
+	padding: 14px;
+	border-radius: 8px;
+	background-color: #1d4ed8;
+	width: 100%;
+}
+#apply-changes-btn:hover {
+	background-color: #1e40af;
+}
+main {
+	position: relative;
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	/* margin-inline: auto; */
+	overflow: hidden;
+	max-width: 640px;
+}
+#background-photo {
+	rotate: 180deg;
+	position: absolute;
+	scale: 1.5;
+	z-index: -1;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+main > header {
+	padding: 20px 16px;
+	display: flex;
+	align-items: center;
+}
+#side-nav-toggle {
+	margin-inline: 4px;
+	padding: 12px;
+	border-radius: 8px;
+}
+#side-nav-toggle > * {
+	width: 28px;
+	height: 28px;
+}
+#side-nav-toggle:hover {
+	background-color: #374151;
+}
+main > header > h1 {
+	font-size: 1.875rem;
+	line-height: 2.25rem;
+	font-weight: bold;
+	color: #a855f7;
+}
+main > header > h1 > span {
+	color: #eab308;
+}
+main > section {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	padding-inline: 20px;
+}
+main > footer {
+	height: 128px;
+}
+/* sm */
+@media screen and (min-width: 600px) {
+	#side-nav > h3 {
+		font-size: 2.25rem;
+		line-height: 2.5rem;
+	}
+	#side-nav > div > button {
+		font-size: 1rem;
+		line-height: 1.5rem;
+	}
+	main > header {
+		padding: 40px 32px;
+	}
+	#side-nav-toggle > * {
+		width: 48px;
+		height: 48px;
+	}
+	main > header > h1 {
+		font-size: 3.75rem;
+		line-height: 1;
+	}
+	main > section {
+		padding-inline: 40px;
+	}
+}
+/* xl */
+@media screen and (min-width: 1280px) {
+	#side-nav {
+		translate: 0 0;
+		position: relative;
+	}
+	#side-nav-close-btn {
+		display: none;
+	}
+	#side-nav-toggle {
+		display: none;
+	}
+	main > header > h1 {
+		margin-inline: auto;
+	}
+}
+.click-ripple-effect {
+	position: fixed;
+	z-index: 1000;
+	width: 80px;
+	height: 80px;
+	border: 5px solid #e91e63;
+	border-radius: 50%;
+	translate: -50% -50%;
+	pointer-events: none;
+	animation: ripple 600ms linear forwards;
+}
+@keyframes ripple {
+	0% {
+		opacity: 0.7;
+		scale: 0.1;
+	}
+	10% {
+		opacity: 0.8;
+		scale: 0.2;
+	}
+	20% {
+		opacity: 9;
+		scale: 0.3;
+	}
+	30% {
+		opacity: 1;
+		scale: 0.4;
+	}
+	40% {
+		opacity: 0.9;
+		scale: 0.5;
+	}
+	50% {
+		opacity: 0.7;
+		scale: 0.6;
+	}
+	60% {
+		opacity: 0.5;
+		scale: 0.7;
+	}
+	70% {
+		opacity: 0.3;
+		scale: 0.8;
+	}
+	80% {
+		opacity: 0.1;
+		scale: 0.9;
+	}
+	90% {
+		opacity: 0.1;
+		scale: 1;
+	}
+	100% {
+		opacity: 0;
+		scale: 1;
+	}
+}
